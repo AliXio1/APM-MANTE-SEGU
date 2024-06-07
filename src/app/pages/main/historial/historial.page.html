@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="header-custom-background" Color="secondary">
+
+    <ion-title class="titulo-centrado">HISTORIAL FINAL</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Historial</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="incident">
+    <h2>{{ incident.type }}</h2>
+    <p>Descripción: {{ incident.description }}</p>
+    <p>Zona: {{ incident.place }}</p>
+    <p>Fecha: {{ incident.date }}</p>
+    <p>Hora: {{ incident.timestamp }}</p>
+
+    <ion-button color="secondary" (click)="navigateTohistorial()">Regresar</ion-button>
+
+  </div>
+  <div *ngIf="!incident">
+    <p>Cargando...</p>
+  </div>
+</ion-content>
