@@ -1,6 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar class="header-custom-background" Color="secondary">
-
+  <ion-toolbar class="header-custom-background" color="secondary">
     <ion-title class="titulo-centrado">DETALLE DEL INCIDENTE</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -17,20 +16,32 @@
       <ion-card-title>Incidente {{ incident.uid }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      
-      
+      <div *ngIf="incident.user">
+        <p><strong>Usuario:</strong> {{ incident.user.name }}</p>
+      </div>
       <p><strong>Estado:</strong> {{ incident.status }}</p>
-      <div *ngIf="incident">
-        <h2>Cargo: {{ incident.type }}</h2>
-        <p>Description: {{ incident.description }}</p>
-        <p>Lugar: {{ incident.place }}</p>
-        <p>Fecha: {{ incident.date }}</p>
-        
+      <p><strong>Cargo:</strong> {{ incident.type }}</p>
+      <p><strong>Descripción:</strong> {{ incident.description }}</p>
+      <p><strong>Zona:</strong> {{ incident.place.name }}</p> <!-- Mostrar Zona -->
+      <p><strong>Piso:</strong> {{ incident.floor }}</p> <!-- Mostrar Piso -->
+      <p><strong>Fecha:</strong> {{ incident.date }}</p>
 
+      <!-- Mostrar la imagen si hay URL disponible -->
+      <div *ngIf="incident.images && incident.images.length > 0">
+        <p><strong>Imagen:</strong></p>
+        <ion-list>
+          <ion-item *ngFor="let imageUrl of incident.images">
+            <ion-thumbnail slot="start">
+              <img [src]="imageUrl" alt="Imagen del Incidente" class="large-image">
+            </ion-thumbnail>
+          </ion-item>
+        </ion-list>
+      </div>
 
-        <ion-button color="primary" (click)="markAsRead()">Leído</ion-button>
-    <ion-button color="primary" (click)="markAsFinished()">Finalizado</ion-button>
-  
+      <!-- Botones para marcar el estado del incidente -->
+      <div class="buttons-container">
+        <ion-button color="primary" (click)="markAsRead()">En Atención</ion-button>
+        <ion-button color="primary" (click)="markAsFinished()">Finalizado</ion-button>
       </div>
       <!-- Añade más campos según los datos del incidente -->
     </ion-card-content>

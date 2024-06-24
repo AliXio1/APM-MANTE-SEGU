@@ -25,7 +25,21 @@ export class FirebaseService {
   login = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
   utilsSvc = inject(UtilsService);
-  
+
+  constructor() {
+    // Escuchar cambios en la colección 'incidents'
+    this.listenForIncidents();
+  }
+
+  // Método para escuchar cambios en la colección 'incidents'
+  listenForIncidents() {
+    this.firestore.collection('incidents').snapshotChanges().subscribe(changes => {
+      // Actualizar la interfaz de usuario con los nuevos incidentes
+      console.log('Nuevos incidentes:', changes);
+      // Aquí puedes agregar la lógica para actualizar la UI o el estado del componente
+    });
+  }
+
   // ===== Enviar email para restablecer contraseña ==========
   sendRecoveryEmail(email: string) {
     return sendPasswordResetEmail(getAuth(), email);
@@ -34,7 +48,7 @@ export class FirebaseService {
   // ========================= Base de Datos ==================
 
   // ==== Setear un documento ====
-  setDocument(path: string, data: any){
+  setDocument(path: string, data: any) {
     return setDoc(doc(getFirestore(), path), data);
   }
 
@@ -48,8 +62,8 @@ export class FirebaseService {
     }
   }
 
-   // ==== Obtener usuarios con la estructura especificada ====
-   async getUsersL(): Promise<Users[]> {
+  // ==== Obtener usuarios con la estructura especificada ====
+  async getUsersL(): Promise<Users[]> {
     const snapshot = await getDocs(collection(getFirestore(), 'usersAdmin'));
     return snapshot.docs.map(doc => doc.data() as Users);
   }
@@ -112,12 +126,13 @@ export class FirebaseService {
     const q = query(collection(getFirestore(), 'incidents'), where('type','in', types));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-}
-async getCurrentUser(): Promise<Users | null> {
-  const currentUser = await this.login.currentUser;
-  if (currentUser) {
-    return this.getUserByEmail(currentUser.email);
   }
-  return null;
-}
+
+  async getCurrentUser(): Promise<Users | null> {
+    const currentUser = await this.login.currentUser;
+    if (currentUser) {
+      return this.getUserByEmail(currentUser.email);
+    }
+    return null;
+  }
 }

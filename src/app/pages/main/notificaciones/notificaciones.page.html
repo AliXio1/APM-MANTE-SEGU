@@ -3,20 +3,14 @@
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons>
-    <ion-title class="titulo-centrado">Notificaciones de Mantenimiento</ion-title>
+    <ion-title class="titulo-centrado">INCIDENCIAS REGISTRADAS</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-card *ngIf="user">
-    <ion-card-title>
-      {{ user.Cargo }}
-    </ion-card-title>
-  </ion-card>
 
   <div class="report-header">
-    <h1 class="report-title">REPORTE DE INCIDENTE</h1>
-    <h2 class="new-incident">¡¡¡NUEVO INCIDENTE!!!</h2>
+    <h2 class="new-incident">NUEVO INCIDENTE</h2>
   </div>
 
   <ion-list *ngIf="user">

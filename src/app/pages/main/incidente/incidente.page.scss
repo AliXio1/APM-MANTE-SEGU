@@ -82,3 +82,12 @@ ion-content {
     }
   }
 }
+
+// Image styles
+.large-image {
+  width: 100%; /* Hace que la imagen ocupe el 100% del contenedor */
+  height: auto; /* Mantiene la relación de aspecto de la imagen */
+  max-width: 400px; /* Limita el tamaño máximo de la imagen */
+  margin: 0 auto; /* Centra la imagen horizontalmente */
+  display: block; /* Hace que la imagen se comporte como un bloque */
+}
