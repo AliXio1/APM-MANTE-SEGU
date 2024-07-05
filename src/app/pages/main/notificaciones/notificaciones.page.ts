@@ -23,19 +23,19 @@ export class NotificacionesPage implements OnInit {
     this.loadUserData();
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter() { 
     this.loadIncidents();
   }
 
   async loadIncidents() {
     try {
       const allIncidents = await this.firebaseService.getIncidents();
-      // Filtrar los incidentes que no están finalizados
       this.incidents = allIncidents.filter(incident => 
         incident.status !== 'finalizado' && 
         (incident.status === 'read' || !incident.status) &&
-        incident.type === this.user.Cargo // Filtrar por Cargo del usuario
+        incident.type === this.user.Cargo
       );
+
     } catch (error) {
       console.error('Error al recuperar incidentes:', error);
     }
@@ -54,7 +54,7 @@ export class NotificacionesPage implements OnInit {
         const user = await this.firebaseSvc.getUserByEmail(email);
         if (user) {
           this.user = user;
-          this.loadIncidents(); // Load incidents after user data is available
+          this.loadIncidents();
         } else {
           throw new Error('Usuario no encontrado');
         }
@@ -72,6 +72,26 @@ export class NotificacionesPage implements OnInit {
       }
     }
   }
+
+  getIncidentColor(incident: any): string {
+
+    if (incident.status === 'read') {
+      return 'medium';
+    }
+    if (incident.status === 'finalizado') {
+      return 'light';
+    }
+    switch (incident.criticidad) {
+      case 'Baja':
+        return 'success';
+      case 'Media':
+        return 'warning';
+      case 'Alta':
+        return 'danger';
+      default:
+        return 'medium';
+    }
+  }  
 }
 
 

@@ -21,6 +21,9 @@ interface Users {
   providedIn: 'root'
 })
 export class FirebaseService {
+  getDownloadURL(photo: any): string | PromiseLike<string> {
+    throw new Error('Method not implemented.');
+  }
 
   login = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
@@ -34,9 +37,7 @@ export class FirebaseService {
   // Método para escuchar cambios en la colección 'incidents'
   listenForIncidents() {
     this.firestore.collection('incidents').snapshotChanges().subscribe(changes => {
-      // Actualizar la interfaz de usuario con los nuevos incidentes
       console.log('Nuevos incidentes:', changes);
-      // Aquí puedes agregar la lógica para actualizar la UI o el estado del componente
     });
   }
 
@@ -86,7 +87,7 @@ export class FirebaseService {
     return this.firestore.createId();
   }
 
-  // Nuevo método para guardar incidentes
+  // Nuevo método para guardar incidentes con criticidad
   async saveIncident(incident: any) {
     const incidentRef = doc(collection(getFirestore(), 'incidents'));
     return setDoc(incidentRef, incident);
@@ -111,14 +112,16 @@ export class FirebaseService {
     }
   }
 
+  // Método para obtener un incidente por UID
   async getIncidentByUid(uid: string): Promise<any | undefined> {
     const docRef = doc(getFirestore(), 'incidents', uid);
     const docSnap = await getDoc(docRef);
     return docSnap.exists() ? docSnap.data() : undefined;
   }
 
+  // Método para obtener incidentes por tipo y cargo
   async getIncidentsByTypeAndCargo(types: string | string[]): Promise<any[]> {
-    // Si se pasa un solo tipo, lo convertimos en un array de un solo elemento
+  
     if (!Array.isArray(types)) {
         types = [types];
     }
@@ -127,6 +130,28 @@ export class FirebaseService {
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
+
+  // Método para obtener la criticidad de un incidente por UID
+  async getIncidentCriticidadByUid(uid: string): Promise<string | undefined> {
+  try {
+    const docRef = doc(getFirestore(), 'incidents', uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const incidentData = docSnap.data();
+      if (incidentData && 'criticidad' in incidentData) {
+        return incidentData['criticidad'];
+      } else {
+        throw new Error('No se encontró el campo "criticidad" en el documento.');
+      }
+    } else {
+      throw new Error('No se encontró el documento de incidente con el UID proporcionado.');
+    }
+  } catch (error) {
+    console.error('Error al obtener la criticidad del incidente:', error);
+    return undefined;
+  }
+}
 
   async getCurrentUser(): Promise<Users | null> {
     const currentUser = await this.login.currentUser;

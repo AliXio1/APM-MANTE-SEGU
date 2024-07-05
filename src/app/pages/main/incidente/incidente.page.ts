@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 })
 export class IncidentePage implements OnInit {
   incident: any;
+  incidentPhotoUrl: string | undefined;
+  incidentId: string;
+  user: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -17,27 +20,42 @@ export class IncidentePage implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
-    this.loadIncident();
+  async ngOnInit() {
+    await this.loadIncident();
   }
+  
 
   async loadIncident() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       try {
         this.incident = await this.firebaseService.getDocument(`incidents/${id}`);
+        console.log('Incidente cargado:', this.incident);
+        if (this.incident.photo) {
+          this.incidentPhotoUrl = await this.firebaseService.getDownloadURL(this.incident.photo);
+        }
+
       } catch (error) {
         console.error('Error al cargar el incidente:', error);
       }
+    }
+  }
+  
+
+  async loadIncidentPhoto(photoUrl: string) {
+    try {
+      this.incidentPhotoUrl = photoUrl;
+    } catch (error) {
+      console.error('Error al cargar la foto del incidente:', error);
     }
   }
 
   async markAsRead() {
     if (this.incident && this.incident.id) {
       try {
-        this.incident.status = 'read'; // Cambia el estado localmente para actualizar el color
+        this.incident.status = 'read';
         await this.firebaseService.updateDocument(`incidents/${this.incident.id}`, { status: 'read' });
-        this.navigateToNotifications(); // Navega a notificaciones después de marcar como leído
+        this.navigateToNotifications();
       } catch (error) {
         console.error('Error al marcar como leído:', error);
       }
@@ -54,9 +72,9 @@ export class IncidentePage implements OnInit {
   async markAsFinished() {
     if (this.incident && this.incident.id) {
       try {
-        this.incident.status = 'finalizado'; // Cambia el estado localmente para actualizar el color
+        this.incident.status = 'finalizado';
         await this.firebaseService.updateDocument(`incidents/${this.incident.id}`, { status: 'finalizado' });
-        this.navigateToNotifications(); // Navega a notificaciones después de marcar como finalizado
+        this.navigateToNotifications();
       } catch (error) {
         console.error('Error al marcar como finalizado:', error);
       }

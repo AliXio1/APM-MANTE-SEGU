@@ -16,26 +16,17 @@
       <ion-card-title>Incidente {{ incident.uid }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div *ngIf="incident.user">
-        <p><strong>Usuario:</strong> {{ incident.user.name }}</p>
-      </div>
       <p><strong>Estado:</strong> {{ incident.status }}</p>
       <p><strong>Cargo:</strong> {{ incident.type }}</p>
       <p><strong>Descripción:</strong> {{ incident.description }}</p>
-      <p><strong>Zona:</strong> {{ incident.place.name }}</p> <!-- Mostrar Zona -->
-      <p><strong>Piso:</strong> {{ incident.floor }}</p> <!-- Mostrar Piso -->
-      <p><strong>Fecha:</strong> {{ incident.date }}</p>
+      <p><strong>Zona:</strong> {{ incident.place }}</p>
+      <p><strong>Piso:</strong> {{ incident.floor }}</p>
+      <p><strong>Fecha:</strong> {{ incident.timestamp }}</p>
+      <p><strong>Foto:</strong></p>
 
       <!-- Mostrar la imagen si hay URL disponible -->
-      <div *ngIf="incident.images && incident.images.length > 0">
-        <p><strong>Imagen:</strong></p>
-        <ion-list>
-          <ion-item *ngFor="let imageUrl of incident.images">
-            <ion-thumbnail slot="start">
-              <img [src]="imageUrl" alt="Imagen del Incidente" class="large-image">
-            </ion-thumbnail>
-          </ion-item>
-        </ion-list>
+      <div *ngIf="incident.photo" class="image-container">
+        <img [src]="incident.photo" alt="Imagen del Incidente" class="large-image">
       </div>
 
       <!-- Botones para marcar el estado del incidente -->
@@ -43,7 +34,6 @@
         <ion-button color="primary" (click)="markAsRead()">En Atención</ion-button>
         <ion-button color="primary" (click)="markAsFinished()">Finalizado</ion-button>
       </div>
-      <!-- Añade más campos según los datos del incidente -->
     </ion-card-content>
   </ion-card>
 </ion-content>

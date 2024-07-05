@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar class="header-custom-background" Color="secondary">
+  <ion-toolbar class="header-custom-background" color="secondary">
     <ion-buttons slot="start">
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons>
@@ -16,8 +16,8 @@
   <ion-list *ngIf="user">
     <ion-item *ngFor="let incident of incidents; let i = index" lines="none">
       <ion-button expand="full" class="notification-button" 
-      [color]="incident.status === 'read' ? 'medium' : 'secondary'" 
-      (click)="viewIncident(incident)">
+        [color]="getIncidentColor(incident)"
+        (click)="viewIncident(incident)">
         NOTIFICACIÓN {{ i + 1 }}
       </ion-button>
     </ion-item>
