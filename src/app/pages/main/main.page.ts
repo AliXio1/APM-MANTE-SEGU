@@ -60,10 +60,10 @@ export class MainPage implements OnInit {
 
   async signOut() {
     try {
-      this.utilsSvc.removeItem('user');  // Correct method to clear local storage
+      this.utilsSvc.removeItem('user');
       this.router.navigate(['/login']).then(() => {
         window.location.reload();
-      });  // Redirect to login page
+      });
     } catch (error) {
       console.error('Error during sign out:', error);
       this.utilsSvc.presentToast({
