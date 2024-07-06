@@ -24,7 +24,6 @@
       <p><strong>Fecha:</strong> {{ incident.timestamp }}</p>
       <p><strong>Foto:</strong></p>
 
-      <!-- Mostrar la imagen si hay URL disponible -->
       <div *ngIf="incident.photo" class="image-container">
         <img [src]="incident.photo" alt="Imagen del Incidente" class="large-image">
       </div>
