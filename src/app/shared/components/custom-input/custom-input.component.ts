@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 })
 export class CustomInputComponent implements OnInit {
 
-  @Input() control!: FormControl; // Corregido el nombre de la propiedad
+  @Input() control!: FormControl;
   @Input() type!: string;
   @Input() label!: string;
   @Input() autocomplete!: string;
