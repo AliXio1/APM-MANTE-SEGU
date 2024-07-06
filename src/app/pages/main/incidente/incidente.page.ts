@@ -68,7 +68,7 @@ export class IncidentePage implements OnInit {
     });
   }
 
-  // Agrega este método en la clase IncidentePage
+  
   async markAsFinished() {
     if (this.incident && this.incident.id) {
       try {
