@@ -22,7 +22,7 @@ export class NotifinalPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loadFinishedIncidents(); // Recarga los incidentes cada vez que la vista entra
+    this.loadFinishedIncidents();
   }
 
   async loadFinishedIncidents() {
@@ -55,7 +55,7 @@ export class NotifinalPage implements OnInit {
         const user = await this.firebaseSvc.getUserByEmail(email);
         if (user) {
           this.user = user;
-          this.loadFinishedIncidents(); // Cargar incidentes después de obtener datos del usuario
+          this.loadFinishedIncidents();
         } else {
           throw new Error('Usuario no encontrado');
         }
