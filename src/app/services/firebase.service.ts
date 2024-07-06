@@ -30,11 +30,9 @@ export class FirebaseService {
   utilsSvc = inject(UtilsService);
 
   constructor() {
-    // Escuchar cambios en la colección 'incidents'
     this.listenForIncidents();
   }
 
-  // Método para escuchar cambios en la colección 'incidents'
   listenForIncidents() {
     this.firestore.collection('incidents').snapshotChanges().subscribe(changes => {
       console.log('Nuevos incidentes:', changes);
@@ -82,7 +80,6 @@ export class FirebaseService {
     await setDoc(userRef, user, { merge: true });
   }
 
-  // Nuevo método para generar un UID
   generateUID(): string {
     return this.firestore.createId();
   }
@@ -102,7 +99,7 @@ export class FirebaseService {
     }
   }
 
-  // Método para obtener múltiples documentos (por ejemplo, incidentes)
+  // Método para obtener múltiples documentos
   async getIncidents(): Promise<any[]> {
     try {
       const snapshot = await this.firestore.collection('incidents').get().toPromise();
@@ -112,7 +109,7 @@ export class FirebaseService {
     }
   }
 
-  // Método para obtener un incidente por UID
+  // Método para obtener un incidente
   async getIncidentByUid(uid: string): Promise<any | undefined> {
     const docRef = doc(getFirestore(), 'incidents', uid);
     const docSnap = await getDoc(docRef);
@@ -131,7 +128,7 @@ export class FirebaseService {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
 
-  // Método para obtener la criticidad de un incidente por UID
+  // Método para obtener la criticidad de un incidente
   async getIncidentCriticidadByUid(uid: string): Promise<string | undefined> {
   try {
     const docRef = doc(getFirestore(), 'incidents', uid);
